@@ -46,14 +46,14 @@ int instruction_pos,
  * val - value to set the register to
  */
 int
-set_reg(int user, int reg, int value)
+reg_set(int user, int reg, int value)
 {
   /* Check if the user is trying to set r0 or r1 */
   if (user == 1 && (reg == 0 || reg == 1))
     return -1;
 
   /* Check for out of bounds registry number */
-  if (reg < 0 || reg > REGISTRY_NUM)
+  if (reg < 0 || reg > REGISTERS_LEN)
     return -2;
 
   /* We should be alright, set the value and return success */

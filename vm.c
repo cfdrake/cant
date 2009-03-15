@@ -59,6 +59,6 @@ main(int argc, char *argv[])
   if (st == -1)
     {
       printf("Error: Invalid file (%s).", file);
-      sys_halt();
+      sys_halt(0x0);
     }
 }

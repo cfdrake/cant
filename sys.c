@@ -5,7 +5,7 @@
 void
 sys_halt(int reg)
 {
-  reg_set(0x1, 0x0);
+  reg_set(0x0, 0x1, 0x0);
   exit(0);
 }
 
@@ -16,7 +16,7 @@ sys_halt(int reg)
 void
 sys_dump(int reg)
 {
-  reg_set(0x1, 0x0);
+  reg_set(0x0, 0x1, 0x0);
   mem_dump();
 }
 
@@ -27,7 +27,7 @@ sys_dump(int reg)
 void
 sys_put_int(int reg)
 {
-  reg_set(0x1, 0x0);
+  reg_set(0x0, 0x1, 0x0);
   printf("%i", mem.registers[reg]);
 }
 
@@ -38,7 +38,7 @@ sys_put_int(int reg)
 void
 sys_put_char(int reg)
 {
-  reg_set(0x1, 0x0);
+  reg_set(0x0, 0x1, 0x0);
   printf("%c", mem.registers[reg]);
 }
 
@@ -49,7 +49,7 @@ sys_put_char(int reg)
 void
 sys_put_str(int reg)
 {
-  int i = 0;
+  int i = 0x0;
   char c = 0x42;  /* heh heh */
 
   /* Loop from data starting point until we find
@@ -58,7 +58,7 @@ sys_put_str(int reg)
   while (c != 0x000)
     {
       /* Retrieve next char and print it */
-      c = data[reg + i];
+      c = mem.data[reg + i];
       printf("%c", c);
 
       /* Move onto the next location */
