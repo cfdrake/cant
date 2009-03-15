@@ -73,11 +73,16 @@ sys_put_str(int reg)
  * Call 0x5
  */
 void
-get_int(int reg)
+sys_get_int(int reg)
 {
   /* Get input */
-  
+  int in;
+  scanf("%d", &in);
   reg_set(0x1, reg, in);
+
+  /* Flush input */
+  char ch;
+  while ((ch = getchar()) != '\n' && ch != EOF);
 
   /* Set r1 */
   reg_set(0x0, 0x1, 0x0);
@@ -88,9 +93,17 @@ get_int(int reg)
  * Call 0x6
  */
 void
-get_char(int reg)
+sys_get_char(int reg)
 {
   /* Get input */
+  char in;
+  scanf("%c", &in);
+  reg_set(0x1, reg, in);
+
+  /* Flush input */
+  char ch;
+  while ((ch = getchar()) != '\n' && ch != EOF);
+
   /* Set r1 */
   reg_set(0x0, 0x1, 0x0);
 }
