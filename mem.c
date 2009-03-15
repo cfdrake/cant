@@ -19,7 +19,7 @@
  * data - Holds the loaded program data
  * instructions - Holds the instructions of the loaded program
  */
-struct ant_memory {
+struct cant_memory {
   int registers[REGISTERS_LEN];
   unsigned char data[DATA_LEN];
   short int instructions[INSTRUCTIONS_LEN];
@@ -33,7 +33,7 @@ struct ant_memory {
  * instruction_pos - keeps track of current instruction position for reading
  * data_pos - keeps track of current data position for reading
  */
-struct ant_memory mem;
+struct cant_memory mem;
 unsigned char prog_counter;
 int instruction_pos,
   data_pos;
