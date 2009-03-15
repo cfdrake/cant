@@ -110,20 +110,20 @@ mem_dump(void)
     {
       /* Dump instructions */
       fprintf(f, "--Instruction memory--\n");
-      fprintf(f, "PC:\t%i\n", prog_counter);
+      fprintf(f, "PC:\t%#x\n", prog_counter);
 
       for (i = 0; i < INSTRUCTIONS_LEN; i++)
-	fprintf(f, "i%i:\t%i\n", i, mem.instructions[i]);
+	fprintf(f, "i%#x:\t%#x\n", i, mem.instructions[i]);
 
       /* Dump data */
       fprintf(f, "--Data memory--\n");
       for (i = 0; i < DATA_LEN; i++)
-	fprintf(f, "d%i:\t%i\n", i, mem.data[i]);
+	fprintf(f, "d%#x:\t%#x\n", i, mem.data[i]);
 
       /* Dump register values */
       fprintf(f, "--Register memory--\n");
       for (i = 0; i < REGISTERS_LEN; i++)
-	fprintf(f, "r%i:\t%i\n", i, mem.registers[i]);
+	fprintf(f, "r%#x:\t%#x\n", i, mem.registers[i]);
     }
 
   /* close the file */
