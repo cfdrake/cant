@@ -39,6 +39,29 @@ int instruction_pos,
   data_pos;
 
 /*
+ * Sets a register to a value
+ * user - Whether the user is setting this, or if it is interally
+ *          1 = user, other = internal
+ * reg - register to set
+ * val - value to set the register to
+ */
+int
+set_reg(int user, int reg, int value)
+{
+  /* Check if the user is trying to set r0 or r1 */
+  if (user == 1 && (reg == 0 || reg == 1))
+    return -1;
+
+  /* Check for out of bounds registry number */
+  if (reg < 0 || reg > REGISTRY_NUM)
+    return -2;
+
+  /* We should be alright, set the value and return success */
+  mem.registers[reg] = value;
+  return 1;
+}
+
+/*
  * Sets the initial values of the memory of the VM by giving
  * instructions invalid values and setting all other data, registers,
  * and the program counter to 0

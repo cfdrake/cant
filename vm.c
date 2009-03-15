@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "mem.c"
+#include "sys.c"
 #define VERSION "0.1"
 
 /*
@@ -53,5 +54,11 @@ main(int argc, char *argv[])
 
   /* Initialize the VM */
   mem_init();
-  mem_load(file);
+  int st = mem_load(file);
+
+  if (st == -1)
+    {
+      printf("Error: Invalid file (%s).", file);
+      sys_halt();
+    }
 }
