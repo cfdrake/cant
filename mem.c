@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 /*
  * REGISTERS_LEN - number of registers the VM holds
  * DATA_LEN - number of user-defined data the VM can hold
@@ -167,6 +165,9 @@ mem_dump(void)
 
   if (f != NULL)
     {
+      /* Dump program data */
+      fprintf(f, "%s %s\n\n", PROGRAM_NAME, PROGRAM_VERSION);
+
       /* Dump instructions */
       fprintf(f, "--Instruction memory--\n");
       fprintf(f, "PC:\t%#x\n", prog_counter);
