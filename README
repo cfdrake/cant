@@ -1,0 +1,19 @@
+cant
+
+Ant RISC, with a few minor differences, in C.
+Goals
+
+    * Write an assembler that can create binary files from ant sources.
+    * Write a VM that can interpret the binary files.
+
+Notes
+
+    * This implementation departs in a few ways from the original.
+          o This implementation does not use any source provided from Harvard (I’m not in the class, and it was 10 years ago anyway :P).
+          o Assembler/VM write/read binary files rather than text files.
+          o There are also probably some unintentional differences too.
+
+External Links
+
+    * THE ANT-1.0 ARCHITECTURE (http://ant.eecs.harvard.edu/ANT-1.0/ant-97.txt)
+

@@ -32,6 +32,7 @@ main(int argc, char *argv[])
   mem_init();
   int st = mem_load(file);
 
+  /* Check for loading errors */
   if (st == -1)
     {
       printf("Error: Invalid file (%s).\n", file);

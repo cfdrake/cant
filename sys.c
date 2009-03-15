@@ -49,6 +49,8 @@ sys_put_char(int reg)
 void
 sys_put_str(int reg)
 {
+  reg_set(0x0, 0x1, 0x0);
+
   int i = 0x0;
   char c = 0x42;  /* heh heh */
 
@@ -73,6 +75,12 @@ sys_put_str(int reg)
 void
 get_int(int reg)
 {
+  /* Get input */
+  
+  reg_set(0x1, reg, in);
+
+  /* Set r1 */
+  reg_set(0x0, 0x1, 0x0);
 }
 
 /*
@@ -82,4 +90,7 @@ get_int(int reg)
 void
 get_char(int reg)
 {
+  /* Get input */
+  /* Set r1 */
+  reg_set(0x0, 0x1, 0x0);
 }
