@@ -21,8 +21,8 @@
  */
 struct ant_memory {
   int registers[REGISTERS_LEN];
-  int data[DATA_LEN];
-  int instructions[INSTRUCTIONS_LEN];
+  unsigned char data[DATA_LEN];
+  short int instructions[INSTRUCTIONS_LEN];
 };
 
 /*
@@ -30,9 +30,13 @@ struct ant_memory {
  * mem - Holds the memory for the VM
  * prog_counter - (PC), holds the location of the next instruction
  *   that the vm will execute
+ * instruction_pos - keeps track of current instruction position for reading
+ * data_pos - keeps track of current data position for reading
  */
 struct ant_memory mem;
-unsigned int prog_counter;
+unsigned char prog_counter;
+int instruction_pos,
+  data_pos;
 
 /*
  * Sets the initial values of the memory of the VM by giving
@@ -74,14 +78,47 @@ int
 mem_load(char *fn)
 {
   /* open up the file for reading */
-  FILE *f = fopen(fn, "r");
+  FILE *f = fopen(fn, "rb");
 
   /* sanity check */
   if (f != NULL)
     {
       /* read the file into memory */
-      while (!feof(f))
+      int read_mode = 0;
+      instruction_pos = 0;
+      data_pos = 0;
+
+      while (feof(f) == 0)
 	{
+	  /* mode 0 read instructions, mode != 0 read data */
+	  if (read_mode == 0)
+	    {
+	      /* read in 2 bytes, add to mem, and update counter */
+	      short int ins;
+	      fread(&ins, sizeof(ins), 1, f);
+
+	      /* check if we have hit the end of instructions yet */
+	      if (ins == 0xffffffff)
+		{
+		  /* special invalid opcode, end of instructions */
+		  read_mode = 1;
+		}
+	      else
+		{
+		  /* still reading instructions, load into memory */
+		  mem.instructions[instruction_pos] = ins;
+		}
+
+	      instruction_pos++;
+	    }
+	  else
+	    {
+	      /* read in 1 byte, add to mem, and update counter */
+	      unsigned char data;
+	      fread(&data, sizeof(data), 1, f);
+	      mem.data[data_pos] = data;
+	      data_pos++;
+	    }
 	}
 
       /* return success */
@@ -91,7 +128,6 @@ mem_load(char *fn)
   else
     {
       /* return error */
-      fclose(f);
       return -1;
     }
 }
@@ -113,12 +149,14 @@ mem_dump(void)
       fprintf(f, "PC:\t%#x\n", prog_counter);
 
       for (i = 0; i < INSTRUCTIONS_LEN; i++)
-	fprintf(f, "i%#x:\t%#x\n", i, mem.instructions[i]);
+	if (mem.instructions[i] != 0xffffffff)
+	  fprintf(f, "i%#x:\t%#x\n", i, mem.instructions[i]);
 
       /* Dump data */
       fprintf(f, "--Data memory--\n");
       for (i = 0; i < DATA_LEN; i++)
-	fprintf(f, "d%#x:\t%#x\n", i, mem.data[i]);
+	if (mem.data[i] != 0x0)
+	  fprintf(f, "d%#x:\t%#x\n", i, mem.data[i]);
 
       /* Dump register values */
       fprintf(f, "--Register memory--\n");

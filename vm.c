@@ -50,4 +50,8 @@ main(int argc, char *argv[])
 
   /* Get filename from last argument */
   char *file = argv[argc - 1];
+
+  /* Initialize the VM */
+  mem_init();
+  mem_load(file);
 }
