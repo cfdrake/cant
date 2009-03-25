@@ -1,6 +1,34 @@
 #include "version.c"
 #include "mem.c"
 #include "sys.c"
+#include "instructions.c"
+
+/*
+ * Main loop of the vm
+ */
+void
+vm_run()
+{
+  /* Reset prog counter as sanity check and execute instructions in memory */
+  for(prog_counter = 0; prog_counter < instruction_pos; prog_counter++)
+    {
+      /* Grab next instruction and execute it */
+      short int instruction = mem.instructions[prog_counter];
+
+      if (instruction == 0xffffffff)
+        {
+          /* Special invalid instruction, signal to quit */
+          break;
+        }
+      else
+        {
+          execute(instruction);
+        }
+    }
+
+  /* Exit nicely */
+  sys_halt (0x0);
+}
 
 /*
  * Starting point of the VM
@@ -43,7 +71,8 @@ main (int argc, char *argv[])
   else
     {
       printf ("Error: no filename specified.\n");
-      sys_halt(0x0);    
+      sys_dump (0x0);
+      sys_halt (0x0);
     }
   
   /*
@@ -58,6 +87,10 @@ main (int argc, char *argv[])
   if (st == -1)
     {
       printf ("Error: Invalid file (%s).\n", file);
+      sys_dump (0x0);
       sys_halt (0x0);
     }
+
+  /* Run the vm */
+  vm_run ();
 }
