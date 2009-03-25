@@ -118,15 +118,15 @@ mem_load (char *fn)
 
 	          /* check if we have hit the end of instructions yet */
 	          if (ins == 0xffffffff)
-		        {
-		          /* special invalid opcode, end of instructions */
-		          read_mode = 1;
-		        }
+                {
+                  /* special invalid opcode, end of instructions */
+                  read_mode = 1;
+                }
               else
-	            {
-	              /* still reading instructions, load into memory */
-	              mem.instructions[instruction_pos] = ins;
-	            }
+                {
+                  /* still reading instructions, load into memory */
+                  mem.instructions[instruction_pos] = ins;
+                }
 
               instruction_pos++;
 	        }
@@ -171,14 +171,14 @@ mem_dump (void)
       fprintf (f, "PC:\t%#x\n", prog_counter);
 
       for (i = 0; i < INSTRUCTIONS_LEN; i++)
-	    if (mem.instructions[i] != 0xffffffff)
-	      fprintf (f, "i%#x:\t%#x\n", i, mem.instructions[i]);
+        if (mem.instructions[i] != 0xffffffff)
+          fprintf (f, "i%#x:\t%#x\n", i, mem.instructions[i]);
 
       /* Dump data */
       fprintf (f, "--Data memory--\n");
       for (i = 0; i < DATA_LEN; i++)
-	    if (mem.data[i] != 0x0)
-	      fprintf (f, "d%#x:\t%#x\n", i, mem.data[i]);
+        if (mem.data[i] != 0x0)
+          fprintf (f, "d%#x:\t%#x\n", i, mem.data[i]);
 
       /* Dump register values */
       fprintf (f, "--Register memory--\n");
