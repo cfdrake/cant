@@ -147,7 +147,12 @@ _inc (int des, int const8)
 {
   check (des, TYPE_DES, 1);
   check (const8, TYPE_CONST8, 2);
-  printf ("inc\n");
+  
+  /* Set des to des + const8 */
+  reg_set (0x1, des, mem.registers[des] + const8);
+  
+  /* Set r1 */
+  reg_set (0x0, 0x1, ((mem.registers[des] > 127) ? 1 : -1));
 }
 
 void
