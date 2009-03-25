@@ -3,7 +3,7 @@ AC_INIT(cant, 0.1, colin.f.drake@gmail.com)
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_SRCDIR(src/vm.c)
 
-AM_PROG_CC
+AC_PROG_CC
 
 AM_INIT_AUTOMAKE
 
