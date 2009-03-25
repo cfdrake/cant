@@ -3,10 +3,10 @@
  * Call 0x0
  */
 void
-sys_halt(int reg)
+sys_halt (int reg)
 {
-  reg_set(0x0, 0x1, 0x0);
-  exit(0);
+  reg_set (0x0, 0x1, 0x0);
+  exit (0);
 }
 
 /*
@@ -14,10 +14,10 @@ sys_halt(int reg)
  * Call 0x1
  */
 void
-sys_dump(int reg)
+sys_dump (int reg)
 {
-  reg_set(0x0, 0x1, 0x0);
-  mem_dump();
+  reg_set (0x0, 0x1, 0x0);
+  mem_dump ();
 }
 
 /*
@@ -25,10 +25,10 @@ sys_dump(int reg)
  * Call 0x2
  */
 void
-sys_put_int(int reg)
+sys_put_int (int reg)
 {
-  reg_set(0x0, 0x1, 0x0);
-  printf("%i", mem.registers[reg]);
+  reg_set (0x0, 0x1, 0x0);
+  printf ("%i", mem.registers[reg]);
 }
 
 /*
@@ -36,10 +36,10 @@ sys_put_int(int reg)
  * Call 0x3
  */
 void
-sys_put_char(int reg)
+sys_put_char (int reg)
 {
-  reg_set(0x0, 0x1, 0x0);
-  printf("%c", mem.registers[reg]);
+  reg_set (0x0, 0x1, 0x0);
+  printf ("%c", mem.registers[reg]);
 }
 
 /*
@@ -47,12 +47,12 @@ sys_put_char(int reg)
  * Call 0x4
  */
 void
-sys_put_str(int reg)
+sys_put_str (int reg)
 {
-  reg_set(0x0, 0x1, 0x0);
+  reg_set (0x0, 0x1, 0x0);
 
   int i = 0x0;
-  char c = 0x42;  /* heh heh */
+  char c = 0x42;		/* heh heh */
 
   /* Loop from data starting point until we find
    *   a null character, printing out each char
@@ -61,7 +61,7 @@ sys_put_str(int reg)
     {
       /* Retrieve next char and print it */
       c = mem.data[reg + i];
-      printf("%c", c);
+      printf ("%c", c);
 
       /* Move onto the next location */
       i++;
@@ -73,19 +73,19 @@ sys_put_str(int reg)
  * Call 0x5
  */
 void
-sys_get_int(int reg)
+sys_get_int (int reg)
 {
   /* Get input */
   int in;
-  scanf("%d", &in);
-  reg_set(0x1, reg, in);
+  scanf ("%d", &in);
+  reg_set (0x1, reg, in);
 
   /* Flush input */
   char ch;
-  while ((ch = getchar()) != '\n' && ch != EOF);
+  while ((ch = getchar ()) != '\n' && ch != EOF);
 
   /* Set r1 */
-  reg_set(0x0, 0x1, 0x0);
+  reg_set (0x0, 0x1, 0x0);
 }
 
 /*
@@ -93,17 +93,17 @@ sys_get_int(int reg)
  * Call 0x6
  */
 void
-sys_get_char(int reg)
+sys_get_char (int reg)
 {
   /* Get input */
   char in;
-  scanf("%c", &in);
-  reg_set(0x1, reg, in);
+  scanf ("%c", &in);
+  reg_set (0x1, reg, in);
 
   /* Flush input */
   char ch;
-  while ((ch = getchar()) != '\n' && ch != EOF);
+  while ((ch = getchar ()) != '\n' && ch != EOF);
 
   /* Set r1 */
-  reg_set(0x0, 0x1, 0x0);
+  reg_set (0x0, 0x1, 0x0);
 }

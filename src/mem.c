@@ -17,7 +17,8 @@
  * data - Holds the loaded program data
  * instructions - Holds the instructions of the loaded program
  */
-struct cant_memory {
+struct cant_memory
+{
   int registers[REGISTERS_LEN];
   unsigned char data[DATA_LEN];
   short int instructions[INSTRUCTIONS_LEN];
@@ -33,8 +34,7 @@ struct cant_memory {
  */
 struct cant_memory mem;
 unsigned char prog_counter;
-int instruction_pos,
-  data_pos;
+int instruction_pos, data_pos;
 
 /*
  * Sets a register to a value
@@ -44,7 +44,7 @@ int instruction_pos,
  * val - value to set the register to
  */
 int
-reg_set(int user, int reg, int value)
+reg_set (int user, int reg, int value)
 {
   /* Check if the user is trying to set r0 or r1 */
   if (user == 1 && (reg == 0 || reg == 1))
@@ -65,7 +65,7 @@ reg_set(int user, int reg, int value)
  * and the program counter to 0
  */
 void
-mem_init(void)
+mem_init (void)
 {
   int i;
 
@@ -74,17 +74,15 @@ mem_init(void)
    * these locations do not contain valid instructions
    */
   for (i = 0; i < INSTRUCTIONS_LEN; i++)
-      mem.instructions[i] = 0xffff;
+    mem.instructions[i] = 0xffff;
 
   /* set all locations in data memory to 0 */
   for (i = 0; i < DATA_LEN; i++)
-      mem.data[i] = 0x0;
+    mem.data[i] = 0x0;
 
   /* set all registers to 0 */
   for (i = 0; i < REGISTERS_LEN; i++)
-    {
-      mem.registers[i] = 0x0;
-    }
+    mem.registers[i] = 0x0;
 
   /* initialize program counter to 0 */
   prog_counter = 0x0;
@@ -96,10 +94,10 @@ mem_init(void)
  * returns - 1 on success, -1 on failure
  */
 int
-mem_load(char *fn)
+mem_load (char *fn)
 {
   /* open up the file for reading */
-  FILE *f = fopen(fn, "rb");
+  FILE *f = fopen (fn, "rb");
 
   /* sanity check */
   if (f != NULL)
@@ -109,41 +107,41 @@ mem_load(char *fn)
       instruction_pos = 0;
       data_pos = 0;
 
-      while (feof(f) == 0)
-	{
-	  /* mode 0 read instructions, mode != 0 read data */
-	  if (read_mode == 0)
+      while (feof (f) == 0)
 	    {
-	      /* read in 2 bytes, add to mem, and update counter */
-	      short int ins;
-	      fread(&ins, sizeof(ins), 1, f);
+	      /* mode 0 read instructions, mode != 0 read data */
+	      if (read_mode == 0)
+	        {
+	          /* read in 2 bytes, add to mem, and update counter */
+	          short int ins;
+	          fread (&ins, sizeof (ins), 1, f);
 
-	      /* check if we have hit the end of instructions yet */
-	      if (ins == 0xffffffff)
-		{
-		  /* special invalid opcode, end of instructions */
-		  read_mode = 1;
-		}
+	          /* check if we have hit the end of instructions yet */
+	          if (ins == 0xffffffff)
+		        {
+		          /* special invalid opcode, end of instructions */
+		          read_mode = 1;
+		        }
+              else
+	            {
+	              /* still reading instructions, load into memory */
+	              mem.instructions[instruction_pos] = ins;
+	            }
+
+              instruction_pos++;
+	        }
 	      else
-		{
-		  /* still reading instructions, load into memory */
-		  mem.instructions[instruction_pos] = ins;
-		}
-
-	      instruction_pos++;
-	    }
-	  else
-	    {
-	      /* read in 1 byte, add to mem, and update counter */
-	      unsigned char data;
-	      fread(&data, sizeof(data), 1, f);
-	      mem.data[data_pos] = data;
-	      data_pos++;
-	    }
-	}
+	        {
+              /* read in 1 byte, add to mem, and update counter */
+              unsigned char data;
+              fread (&data, sizeof (data), 1, f);
+              mem.data[data_pos] = data;
+              data_pos++;
+            }
+        }
 
       /* return success */
-      fclose(f);
+      fclose (f);
       return 1;
     }
   else
@@ -158,36 +156,36 @@ mem_load(char *fn)
  * file, cant.core in the current directory
  */
 void
-mem_dump(void)
+mem_dump (void)
 {
   int i;
-  FILE *f = fopen("cant.core", "w");
+  FILE *f = fopen ("cant.core", "w");
 
   if (f != NULL)
     {
       /* Dump program data */
-      fprintf(f, "%s %s\n\n", PROGRAM_NAME, PROGRAM_VERSION);
+      fprintf (f, "%s %s\n\n", PROGRAM_NAME, PROGRAM_VERSION);
 
       /* Dump instructions */
-      fprintf(f, "--Instruction memory--\n");
-      fprintf(f, "PC:\t%#x\n", prog_counter);
+      fprintf (f, "--Instruction memory--\n");
+      fprintf (f, "PC:\t%#x\n", prog_counter);
 
       for (i = 0; i < INSTRUCTIONS_LEN; i++)
-	if (mem.instructions[i] != 0xffffffff)
-	  fprintf(f, "i%#x:\t%#x\n", i, mem.instructions[i]);
+	    if (mem.instructions[i] != 0xffffffff)
+	      fprintf (f, "i%#x:\t%#x\n", i, mem.instructions[i]);
 
       /* Dump data */
-      fprintf(f, "--Data memory--\n");
+      fprintf (f, "--Data memory--\n");
       for (i = 0; i < DATA_LEN; i++)
-	if (mem.data[i] != 0x0)
-	  fprintf(f, "d%#x:\t%#x\n", i, mem.data[i]);
+	    if (mem.data[i] != 0x0)
+	      fprintf (f, "d%#x:\t%#x\n", i, mem.data[i]);
 
       /* Dump register values */
-      fprintf(f, "--Register memory--\n");
+      fprintf (f, "--Register memory--\n");
       for (i = 0; i < REGISTERS_LEN; i++)
-	fprintf(f, "r%#x:\t%#x\n", i, mem.registers[i]);
+	    fprintf (f, "r%#x:\t%#x\n", i, mem.registers[i]);
     }
 
   /* close the file */
-  fclose(f);
+  fclose (f);
 }
