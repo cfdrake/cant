@@ -123,7 +123,9 @@ _lc (int des, int const8)
 {
   check (des, TYPE_DES, 1);
   check (const8, TYPE_CONST8, 2);
-  printf ("lc\n");
+
+  /* Set des to const8 */
+  reg_set (0x1, des, const8);
 }
 
 void
@@ -131,7 +133,13 @@ _jmp (int reg, int const8)
 {
   check (reg, TYPE_REG, 1);
   check (const8, TYPE_CONST8, 2);
-  printf ("jmp\n");
+
+  /* Set new pc */
+  int oldpc = prog_counter;
+  prog_counter = const8;
+
+  /* Store old pc in reg1 */
+  reg_set (0x0, 0x1, oldpc);
 }
 
 void
@@ -147,6 +155,8 @@ _sys (int reg, int const8)
 {
   check (reg, TYPE_REG, 1);
   check (const8, TYPE_CONST8, 2);
+
+  /* Execute system call */
   sys_call (reg, const8);
 }
 
