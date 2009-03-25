@@ -147,7 +147,7 @@ _sys (int reg, int const8)
 {
   check (reg, TYPE_REG, 1);
   check (const8, TYPE_CONST8, 2);
-  printf ("sys\n");
+  sys_call (reg, const8);
 }
 
 void
@@ -187,16 +187,16 @@ execute (unsigned short int ins)
         _st (a1, a2, a3);
         break;
       case 0xa:
-        _lc (a1, a2);
+        _lc (a1, a3);
         break;
       case 0xb:
-        _jmp (a1, a2);
+        _jmp (a1, a3);
         break;
       case 0xc:
-        _inc (a1, a2);
+        _inc (a1, a3);
         break;
       case 0xf:
-        _sys (a1, a2);
+        _sys (a1, a3);
         break;
       default:
         printf ("Error: invalid opcode %#x.\n", a0);

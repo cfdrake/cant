@@ -60,7 +60,7 @@ sys_put_str (int reg)
   while (c != 0x000)
     {
       /* Retrieve next char and print it */
-      c = mem.data[reg + i];
+      c = mem.data[mem.registers[reg] + i];
       printf ("%c", c);
 
       /* Move onto the next location */
@@ -106,4 +106,40 @@ sys_get_char (int reg)
 
   /* Set r1 */
   reg_set (0x0, 0x1, 0x0);
+}
+
+/*
+ * Calls system call with code 'code'
+ */
+void
+sys_call (int reg, int code)
+{
+  switch (code)
+    {
+      case 0x0:
+        sys_halt (reg);
+        break;
+      case 0x1:
+        sys_dump (reg);
+        break;
+      case 0x2:
+        sys_put_int (reg);
+        break;
+      case 0x3:
+        sys_put_char (reg);
+        break;
+      case 0x4:
+        sys_put_str (reg);
+        break;
+      case 0x5:
+        sys_get_int (reg);
+        break;
+      case 0x6:
+        sys_get_char (reg);
+        break;
+      default:
+        printf ("Error: invalid system call code %#x.\n", reg);
+        sys_dump (0x0);
+        sys_halt (0x0);
+    }
 }
