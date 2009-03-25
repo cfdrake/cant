@@ -12,6 +12,8 @@ main (int argc, char *argv[])
    * Parse command line options 
    */
   int c;
+  char *file;
+
   while ((c = getopt (argc, argv, "vh")) != -1)
     {
       switch (c)
@@ -34,8 +36,16 @@ main (int argc, char *argv[])
   /*
    * Get filename from last argument 
    */
-  char *file = argv[argc - 1];
-
+  if (argc > 1)
+    {
+      file = argv[argc - 1];
+    }
+  else
+    {
+      printf ("Error: no filename specified.\n");
+      sys_halt(0x0);    
+    }
+  
   /*
    * Initialize the VM 
    */
