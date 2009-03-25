@@ -86,7 +86,7 @@ main (int argc, char *argv[])
    */
   if (st == -1)
     {
-      printf ("Error: Invalid file (%s).\n", file);
+      printf ("Error: invalid file (%s).\n", file);
       sys_dump (0x0);
       sys_halt (0x0);
     }
