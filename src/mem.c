@@ -48,15 +48,38 @@ reg_set (int user, int reg, int value)
 {
   /* Check if the user is trying to set r0 or r1 */
   if (user == 1 && (reg == 0 || reg == 1))
-    return -1;
+    {
+      printf ("Error: cannot set register %#x.\n", reg);
+      sys_dump (0x0);
+      sys_halt (0x0);
+    } 
 
   /* Check for out of bounds registry number */
   if (reg < 0 || reg > REGISTERS_LEN)
-    return -2;
+    {
+      printf ("Error: register %#x doesn't exist.\n", reg);
+      sys_dump (0x0);
+      sys_halt (0x0);
+    }
 
   /* We should be alright, set the value and return success */
   mem.registers[reg] = value;
   return 1;
+}
+
+/*
+ * Sets a memory address to a value
+ * addr - element ("address") in data array
+ * value - value to store
+ */
+void
+mem_set (unsigned char addr, int value)
+{
+  /* Sanity check and store */
+  if (addr < DATA_LEN)
+    {
+      mem.data[addr] = value;
+    }
 }
 
 /*
