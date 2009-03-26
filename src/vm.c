@@ -22,7 +22,7 @@ vm_run()
         }
       else
         {
-          execute(instruction);
+          execute (instruction);
         }
     }
 
