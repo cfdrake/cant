@@ -1,8 +1,5 @@
-#include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h>
-#define PROGRAM_NAME "cant"
-#define PROGRAM_VERSION "0.1"
+#include "version.h"
 
 /*
  * Displays version info

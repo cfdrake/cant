@@ -1,9 +1,6 @@
-/* Constants for types of variables to check */
-#define TYPE_SRC    0
-#define TYPE_DES    1
-#define TYPE_REG    2
-#define TYPE_CONST8 3
-#define TYPE_CONST4 4
+#include <stdio.h>
+#include "instructions.h"
+#include "mem.h"
 
 /*
  * Determines if the specified arg is of a type (des, reg, etc.)

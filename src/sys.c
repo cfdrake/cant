@@ -1,3 +1,8 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "sys.h"
+#include "mem.h"
+
 /*
  * Halts VM immediately 
  * Call 0x0
