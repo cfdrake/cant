@@ -20,11 +20,10 @@
  * data - Holds the loaded program data
  * instructions - Holds the instructions of the loaded program
  */
-struct cant_memory
-{
-  int registers[REGISTERS_LEN];
-  unsigned char data[DATA_LEN];
-  short int instructions[INSTRUCTIONS_LEN];
+struct cant_memory {
+    int registers[REGISTERS_LEN];
+    unsigned char data[DATA_LEN];
+    short int instructions[INSTRUCTIONS_LEN];
 };
 
 struct cant_memory mem;

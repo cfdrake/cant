@@ -4,14 +4,14 @@
 #include "mem.h"
 
 /*
- * Halts VM immediately 
+ * Halts VM immediately
  * Call 0x0
  */
 void
 sys_halt (int reg)
 {
-  reg_set (0x0, 0x1, 0x0);
-  exit (0);
+    reg_set (0x0, 0x1, 0x0);
+    exit (0);
 }
 
 /*
@@ -21,8 +21,8 @@ sys_halt (int reg)
 void
 sys_dump (int reg)
 {
-  reg_set (0x0, 0x1, 0x0);
-  mem_dump ();
+    reg_set (0x0, 0x1, 0x0);
+    mem_dump ();
 }
 
 /*
@@ -32,8 +32,8 @@ sys_dump (int reg)
 void
 sys_put_int (int reg)
 {
-  reg_set (0x0, 0x1, 0x0);
-  printf ("%i", mem.registers[reg]);
+    reg_set (0x0, 0x1, 0x0);
+    printf ("%i", mem.registers[reg]);
 }
 
 /*
@@ -43,8 +43,8 @@ sys_put_int (int reg)
 void
 sys_put_char (int reg)
 {
-  reg_set (0x0, 0x1, 0x0);
-  printf ("%c", mem.registers[reg]);
+    reg_set (0x0, 0x1, 0x0);
+    printf ("%c", mem.registers[reg]);
 }
 
 /*
@@ -54,43 +54,42 @@ sys_put_char (int reg)
 void
 sys_put_str (int reg)
 {
-  reg_set (0x0, 0x1, 0x0);
+    reg_set (0x0, 0x1, 0x0);
 
-  int i = 0x0;
-  char c = 0x42;		/* heh heh */
+    int i = 0x0;
+    char c = 0x42;		/* heh heh */
 
-  /* Loop from data starting point until we find
-   *   a null character, printing out each char
-   */
-  while (c != 0x000)
-    {
-      /* Retrieve next char and print it */
-      c = mem.data[mem.registers[reg] + i];
-      printf ("%c", c);
+    /* Loop from data starting point until we find
+     *   a null character, printing out each char
+     */
+    while (c != 0x000) {
+        /* Retrieve next char and print it */
+        c = mem.data[mem.registers[reg] + i];
+        printf ("%c", c);
 
-      /* Move onto the next location */
-      i++;
+        /* Move onto the next location */
+        i++;
     }
 }
 
-/* 
+/*
  * Reads an int from input, and saves it in a register
  * Call 0x5
  */
 void
 sys_get_int (int reg)
 {
-  /* Get input */
-  int in;
-  scanf ("%d", &in);
-  reg_set (0x1, reg, in);
+    /* Get input */
+    int in;
+    scanf ("%d", &in);
+    reg_set (0x1, reg, in);
 
-  /* Flush input */
-  char ch;
-  while ((ch = getchar ()) != '\n' && ch != EOF);
+    /* Flush input */
+    char ch;
+    while ((ch = getchar ()) != '\n' && ch != EOF);
 
-  /* Set r1 */
-  reg_set (0x0, 0x1, 0x0);
+    /* Set r1 */
+    reg_set (0x0, 0x1, 0x0);
 }
 
 /*
@@ -100,17 +99,17 @@ sys_get_int (int reg)
 void
 sys_get_char (int reg)
 {
-  /* Get input */
-  char in;
-  scanf ("%c", &in);
-  reg_set (0x1, reg, in);
+    /* Get input */
+    char in;
+    scanf ("%c", &in);
+    reg_set (0x1, reg, in);
 
-  /* Flush input */
-  char ch;
-  while ((ch = getchar ()) != '\n' && ch != EOF);
+    /* Flush input */
+    char ch;
+    while ((ch = getchar ()) != '\n' && ch != EOF);
 
-  /* Set r1 */
-  reg_set (0x0, 0x1, 0x0);
+    /* Set r1 */
+    reg_set (0x0, 0x1, 0x0);
 }
 
 /*
@@ -119,30 +118,29 @@ sys_get_char (int reg)
 void
 sys_call (int reg, int code)
 {
-  switch (code)
-    {
-      case 0x0:
+    switch (code) {
+    case 0x0:
         sys_halt (reg);
         break;
-      case 0x1:
+    case 0x1:
         sys_dump (reg);
         break;
-      case 0x2:
+    case 0x2:
         sys_put_int (reg);
         break;
-      case 0x3:
+    case 0x3:
         sys_put_char (reg);
         break;
-      case 0x4:
+    case 0x4:
         sys_put_str (reg);
         break;
-      case 0x5:
+    case 0x5:
         sys_get_int (reg);
         break;
-      case 0x6:
+    case 0x6:
         sys_get_char (reg);
         break;
-      default:
+    default:
         printf ("Error: invalid system call code %#x.\n", reg);
         sys_dump (0x0);
         sys_halt (0x0);
