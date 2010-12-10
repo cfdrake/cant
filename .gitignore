@@ -1,15 +1,5 @@
-# Autoconf files
+cmake_install.cmake
+cant.core
+CMakeCache.txt
+CMakeFiles
 Makefile
-Makefile.in
-aclocal.m4
-autom4te.cache/*
-config.log
-config.status
-config/*
-configure
-src/.deps/*`
-src/Makefile
-src/Makefile.in
-src/.deps/*
-src/cantvm
-src/*.o
